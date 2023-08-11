@@ -8,7 +8,6 @@
 </head>
 <body>
 <?php
-phpinfo();
 require_once 'phpqrcode/qrlib.php';
 QRcode::png('some othertext 1234');
 ?>
