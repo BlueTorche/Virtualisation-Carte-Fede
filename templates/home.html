@@ -1,0 +1,13 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>QR Code</title>
+</head>
+<body>
+<h1>QR Code : </h1>
+<img src="{{ qrcode("2022-2023-F-144", error_correction='H', fill_color='2f3293', icon_img=url_for('static', filename='img/logo-fede.PNG', _external=True) ) }}">
+    {% if message %}
+      <div class="message">{{ message }}</div>
+    {% endif %}
+</body>
+</html>

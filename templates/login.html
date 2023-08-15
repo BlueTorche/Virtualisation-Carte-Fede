@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <link rel="stylesheet" href="{{ url_for('static',filename = 'style.css') }}">
+</head>
+<body>
+  <div class="content">
+    <form action="{{ url_for('login') }}" method="POST">
+      <h2>Login</h2>
+        {% if message %}
+          <div class="message">{{ message }}</div>
+        {% endif %}
+        {{ form.csrf_token }}
+        {{ form.email.label }} {{ form.email }}
+        {{ form.password.label }} {{ form.password }}
+        {{ form.submit }}
+  <div>
+<button class="create-account-btn" onclick="window.location.href='{{ url_for('login', _method='GET') }}'">Create an Account</button>
+  </div>
+    </form>
+  </div>
+</body>
+</html>
