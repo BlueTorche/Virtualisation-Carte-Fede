@@ -1,7 +1,8 @@
-
+import argon2
 from flask_apispec import MethodResource
 from flask import render_template, make_response, request, session, redirect, url_for
-from flask_jwt_extended import create_access_token, set_access_cookies, create_refresh_token, set_refresh_cookies
+from flask_jwt_extended import create_access_token, set_access_cookies, create_refresh_token, set_refresh_cookies, \
+    get_jwt_identity, jwt_required
 
 from Models.database.databasemodels import User, Password , Role
 from Models.schemas.login_schema import LoginForm
@@ -25,8 +26,6 @@ class Login(MethodResource):
             access_token = create_access_token(identity=identity)
             refresh_token = create_refresh_token(identity=identity)
 
-            session['role'] = user.user_role
-
             response = redirect(url_for('home', _method='GET'))
             set_access_cookies(response, access_token)
             set_refresh_cookies(response, refresh_token)
@@ -36,8 +35,8 @@ class Login(MethodResource):
     def get(self):
         message = request.args.get('message')
 
-        if session.get("token"):
-            return make_response(redirect(url_for('home', _method='GET', message=message)))
+        # if:
+        #     return make_response(redirect(url_for('home', _method='GET', message=message)))
 
         form = LoginForm()
         template = render_template('login.html', form=form, message=message)

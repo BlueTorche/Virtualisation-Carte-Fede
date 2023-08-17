@@ -2,10 +2,11 @@
 <html>
 <head>
   <title>Login</title>
+  <meta charset="utf-8">
   <link rel="stylesheet" href="{{ url_for('static',filename = 'style.css') }}">
 </head>
 <body>
-  <div class="content">
+  <div class="container">
     <form action="{{ url_for('login') }}" method="POST">
       <h2>Login</h2>
         {% if message %}
@@ -15,9 +16,6 @@
         {{ form.email.label }} {{ form.email }}
         {{ form.password.label }} {{ form.password }}
         {{ form.submit }}
-  <div>
-<button class="create-account-btn" onclick="window.location.href='{{ url_for('login', _method='GET') }}'">Create an Account</button>
-  </div>
     </form>
   </div>
 </body>

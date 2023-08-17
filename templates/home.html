@@ -1,13 +1,24 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Code</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-<h1>QR Code : </h1>
-<img src="{{ qrcode("2022-2023-F-144", error_correction='H', fill_color='2f3293', icon_img=url_for('static', filename='img/logo-fede.PNG', _external=True) ) }}">
+<div class="container">
+    <h1>QR Code:</h1>
+    <img src="{{ qrcode(carte.carte_validity_year+'_'+carte.carte_number, error_correction='H', fill_color='2f3293', icon_img=url_for('static', filename='img/logo-fede.PNG', _external=True)) }}">
+    <h3>Numéro de Carte: {{carte.carte_number}}</h3>
+    <h3>Année : {{carte.carte_validity_year}}</h3>
+    <h3>Nom : {{user.user_last_name}}</h3>
+    <h3>Prénom : {{user.user_first_name}}</h3>
+    <h3>Etude : {{carte.carte_study_year}}</h3>
+
     {% if message %}
-      <div class="message">{{ message }}</div>
+        <div class="message">{{ message }}</div>
     {% endif %}
+</div>
 </body>
 </html>

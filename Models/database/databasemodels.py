@@ -13,6 +13,18 @@ class Role(db.Model):
     role_id = db.Column(db.SmallInteger, primary_key=True, server_default=db.text("'1'::smallint"))
     role_name = db.Column(db.String, nullable=False)
 
+class Carte(db.Model):
+    __tablename__ = 'carte'
+
+    carte_id = db.Column(UUID, primary_key=True, server_default=db.text("uuid_generate_v4()"))
+    carte_number = db.Column(db.String, nullable=False)
+    carte_validity_year = db.Column(db.String, nullable=False)
+    carte_study_year = db.Column(db.String, nullable=False)
+
+    carte_user_id = db.Column(db.ForeignKey('users.user_id'))
+
+    user = relationship('User')
+
 
 class User(db.Model):
     __tablename__ = 'users'

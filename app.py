@@ -15,7 +15,7 @@ from Models.database.databasemodels import db as db
 from Models.routes.login_route import Login
 from Models.routes.home_route import Home
 # from Models.routes.Logout_route import Logout
-# from Models.routes.Admin_route import Admin
+from Models.routes.admin_route import Admin
 # from Models.routes.ChangeCredentials_route import ChangeCredentials
 # from Models.utils.limiter import limiter
 
@@ -86,7 +86,7 @@ def create_app():
     api.add_resource(Login, '/')
     # api.add_resource(Logout, '/logout')
     # api.add_resource(Home, '/home')
-    # api.add_resource(Admin, '/admin')
+    api.add_resource(Admin, '/admin')
     # api.add_resource(ChangeCredentials, '/changecredentials')
 
     register_extensions(app)

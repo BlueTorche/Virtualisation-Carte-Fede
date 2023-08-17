@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h2>Créer une Carte fédé</h2>
+    <form action="{{ url_for('admin') }}" method="POST">
+      <input type="hidden" name="_method" value="CREATE">
+      {% if message %}
+        <div class="message">{{ message }}</div>
+      {% endif %}
+      {{ form.csrf_token }}
+      <label>{{ form.email.label }} {{ form.email }}</label>
+      <label>{{ form.firstname.label }} {{ form.firstname }}</label>
+      <label>{{ form.lastname.label }} {{ form.lastname }}</label>
+      <label>{{ form.study_year.label }} {{ form.study_year }}</label>
+      <label>{{ form.validity_year.label }} {{ form.validity_year }}</label>
+      <label>{{ form.card_number.label }} {{ form.card_number }}</label>
+      <div class="submit-button">
+        {{ form.submit }}
+      </div>
+    </form>
+  </div>
+</body>
+</html>
