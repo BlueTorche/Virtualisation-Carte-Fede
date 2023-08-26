@@ -25,9 +25,11 @@ class Home(MethodResource):
         carte = Carte.query.filter_by(
             carte_user_id=User.query.filter_by(user_email=get_jwt_identity()['email']).first().user_id
                                     ).first()
+        domain = request.host_url
+        code = carte.carte_validity_year + '_' + carte.carte_number
+        link = f'{domain}scan?code={code}'
 
-
-        template = render_template('home.html', message=message, carte=carte, user=user)
+        template = render_template('home.html', message=message, link=link, user=user ,carte=carte)
         response = make_response(template)
         response.headers['Content-Type'] = 'text/html'
         return response

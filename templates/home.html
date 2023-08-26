@@ -9,7 +9,9 @@
 <body>
 <div class="container">
     <h1>QR Code:</h1>
-    <img src="{{ qrcode(carte.carte_validity_year+'_'+carte.carte_number, error_correction='H', fill_color='2f3293', icon_img=url_for('static', filename='img/logo-fede.PNG', _external=True)) }}">
+    <a href="{{link}}">
+        <img src="{{ qrcode(link, error_correction='H', fill_color='2f3293', icon_img=url_for('static', filename='img/logo-fede.PNG', _external=True)) }}">
+    </a>
     <h3>Numéro de Carte: {{carte.carte_number}}</h3>
     <h3>Année : {{carte.carte_validity_year}}</h3>
     <h3>Nom : {{user.user_last_name}}</h3>

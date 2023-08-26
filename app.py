@@ -11,11 +11,16 @@ from flask_wtf import CSRFProtect
 from flask_qrcode import QRcode
 
 from Models.database.databasemodels import db as db
+from Models.routes.change_credentials_route import ChangeCredentials
 # from Models.routes.Register_route import Register
 from Models.routes.login_route import Login
 from Models.routes.home_route import Home
 # from Models.routes.Logout_route import Logout
 from Models.routes.admin_route import Admin
+from Models.routes.scan_route import Scan
+from Models.routes.view_route import View
+
+
 # from Models.routes.ChangeCredentials_route import ChangeCredentials
 # from Models.utils.limiter import limiter
 
@@ -82,12 +87,12 @@ def create_app():
 
     # ajoute les ressources à l'api et les joint à la route
     # api.add_resource(Register, '/register')
-    api.add_resource(Home, '/home')
     api.add_resource(Login, '/')
-    # api.add_resource(Logout, '/logout')
-    # api.add_resource(Home, '/home')
+    api.add_resource(Home, '/home')
     api.add_resource(Admin, '/admin')
-    # api.add_resource(ChangeCredentials, '/changecredentials')
+    api.add_resource(View, '/view')
+    api.add_resource(Scan, '/scan')
+    api.add_resource(ChangeCredentials, '/changecredentials')
 
     register_extensions(app)
     return app
