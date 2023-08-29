@@ -1,3 +1,5 @@
+import re
+
 import argon2
 from flask_apispec import MethodResource
 from flask import render_template, make_response, request, redirect, url_for
@@ -13,7 +15,8 @@ import datetime
 
 def generate_available_card_number():
     all_cartes = Carte.query.all()
-    card_num_set = set([int(card.carte_number[2:]) for card in all_cartes])
+
+    card_num_set = set([int(re.sub(r'\D', '', card.carte_number)) for card in all_cartes])
 
     max_size = 1000
     max_select_box_size = 20
@@ -53,14 +56,6 @@ class Admin(MethodResource):
         user = User.query.filter_by(user_email=email).first()
 
         message = ""
-
-        # if not (any(c.islower() for c in password)
-        #         and any(c.isupper() for c in password)
-        #         and any(c.isdigit() for c in password)
-        #         and any(c in '@$!%*?&' for c in password)):
-        #     return redirect(url_for('register', _method='GET', message='Password should contain at least one uppercase '
-        #                                                                'letter, one lowercase letter, one digit, '
-        #                                                                'and one special character.'))
 
         if user is None:
             password = "password"
@@ -111,14 +106,14 @@ class Admin(MethodResource):
     def get(self):
         form = AdminForm()
 
-        form.card_number.choices = generate_available_card_number()
-
         message = request.args.get('message')
 
         if not get_jwt_identity():
             return redirect(url_for('login', _method='GET', message=message))
         if not get_jwt_identity()['role'] == 1:
             return redirect(url_for('home', _method='GET', message=message))
+
+        form.card_number.choices = generate_available_card_number()
 
         users = User.query.options(joinedload(User.role)).all()
         roles = Role.query.all()

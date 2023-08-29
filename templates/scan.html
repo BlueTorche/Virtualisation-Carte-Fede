@@ -3,8 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Scan</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename = 'style.css') }}">
 </head>
 <body>
+  <div class="container">
+{% if carte and user %}
+    <h3>Numéro de Carte: {{carte.carte_number}}</h3>
+    <h3>Année : {{carte.carte_validity_year}}</h3>
+    <h3>Nom : {{user.user_last_name}}</h3>
+    <h3>Prénom : {{user.user_first_name}}</h3>
+    <h3>Etude : {{carte.carte_study_year}}</h3>
+{% else %}
 
+    <h3>No Card Found</h3>
+      {% endif%}
+  </div>
 </body>
 </html>

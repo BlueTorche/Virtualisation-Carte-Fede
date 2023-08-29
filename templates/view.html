@@ -3,8 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <title>View</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename = 'style.css') }}">
 </head>
 <body>
-
+    <div class="container">
+    <table>
+        <thead>
+            <tr>
+                <th>Validity Year</th>
+                <th>Card Number</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for info in infos %}
+                <tr>
+                    <td>{{ info.validity_year }}</td>
+                    <td>{{ info.number }}</td>
+                    <td>{{ info.first_name }}</td>
+                    <td>{{ info.last_name }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
 </body>
 </html>
