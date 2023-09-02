@@ -17,19 +17,23 @@ class Home(MethodResource):
     def get(self):
         message = request.args.get('message')
         user = User.query.filter_by(user_email=get_jwt_identity()['email']).first()
-        if not get_jwt_identity() or user is None:
+
+        current_user = get_jwt_identity()
+
+        if not current_user or user is None:
             return redirect(url_for('login', _method='GET', message=message))
-        if get_jwt_identity()['role'] == 1:
+        if current_user['role'] == 1:
             return redirect(url_for('admin', _method='GET', message=message))
 
         carte = Carte.query.filter_by(
-            carte_user_id=User.query.filter_by(user_email=get_jwt_identity()['email']).first().user_id
+            carte_user_id=User.query.filter_by(user_email=current_user['email']).first().user_id
                                     ).first()
         domain = request.host_url
         code = carte.carte_validity_year + '_' + carte.carte_number
         link = f'{domain}scan?code={code}'
 
-        template = render_template('home.html', message=message, link=link, user=user ,carte=carte)
+        template = render_template('home.html', message=message, link=link, user=user,
+                                   carte=carte, current_user=current_user, current_page='home')
         response = make_response(template)
         response.headers['Content-Type'] = 'text/html'
         return response

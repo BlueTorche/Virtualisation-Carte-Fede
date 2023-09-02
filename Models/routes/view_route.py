@@ -11,9 +11,11 @@ class View(MethodResource):
     def get(self):
         message = request.args.get('message')
 
-        if not get_jwt_identity():
+        current_user = get_jwt_identity()
+
+        if not current_user:
             return redirect(url_for('login', _method='GET', message=message))
-        if not get_jwt_identity()['role'] == 1:
+        if not current_user['role'] == 1:
             return redirect(url_for('home', _method='GET', message=message))
 
         cartes = Carte.query.all()
@@ -32,6 +34,6 @@ class View(MethodResource):
                               "last_name": user.user_last_name,
                               })
 
-        template = render_template('view.html', infos=infos)
+        template = render_template('view.html', infos=infos, current_user=current_user, current_page='view')
         response = make_response(template)
         return response

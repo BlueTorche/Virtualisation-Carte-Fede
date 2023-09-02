@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+  {% include 'navbar.html' %}
   <div class="container">
     <h2>Créer une Carte fédé</h2>
     <form action="{{ url_for('admin') }}" method="POST">
@@ -25,5 +26,6 @@
       </div>
     </form>
   </div>
+
 </body>
 </html>

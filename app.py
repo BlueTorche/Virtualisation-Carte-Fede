@@ -17,6 +17,7 @@ from Models.routes.login_route import Login
 from Models.routes.home_route import Home
 # from Models.routes.Logout_route import Logout
 from Models.routes.admin_route import Admin
+from Models.routes.logout_route import Logout
 from Models.routes.scan_route import Scan
 from Models.routes.view_route import View
 
@@ -92,7 +93,8 @@ def create_app():
     api.add_resource(Admin, '/admin')
     api.add_resource(View, '/view')
     api.add_resource(Scan, '/scan')
-    api.add_resource(ChangeCredentials, '/changecredentials')
+    api.add_resource(Logout, '/logout')
+    api.add_resource(ChangeCredentials, '/change-credentials')
 
     register_extensions(app)
     return app

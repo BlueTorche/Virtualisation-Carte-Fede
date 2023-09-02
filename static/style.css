@@ -50,6 +50,23 @@ select {
   border: 1px solid #ccc;
   margin-bottom: 15px;
 }
+input[type="submit"] {
+  width: 90%;
+  padding: 5%;
+  font-size: 16px;
+  border-radius: 5px;
+  background-color: #2f3293; /* Change to your desired background color */
+  color: #fff; /* Text color */
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s; /* Add a smooth transition effect */
+  margin-bottom: 15px;
+}
+
+/* Optional: Hover effect */
+input[type="submit"]:hover {
+  background-color: #0f1273; /* Change to your desired hover background color */
+}
 
 .submit-button {
   margin-top: 20px;

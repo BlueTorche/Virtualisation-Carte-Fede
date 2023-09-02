@@ -1,0 +1,41 @@
+  <!-- Your common head content here -->
+  <style>
+    .navbar {
+      display: none; /* Initially hide the navbar */
+    }
+
+    .navbar.active {
+      display: block; /* Show the navbar when active class is applied */
+    }
+  </style>
+  <script>
+    function toggleNavbar() {
+      var navbar = document.querySelector('.navbar');
+      navbar.classList.toggle('active');
+    }
+  </script>
+
+<!-- navbar.html -->
+  <button onclick="toggleNavbar()">Toggle Navbar</button>
+  <div class="navbar">
+    <form action="{{ url_for('logout') }}" method="GET">
+      <input type="submit" value="Logout">
+    </form>
+    {% if current_user  and current_user ['role'] == 1 %}
+      {% if current_page != 'admin' %}
+        <form action="{{ url_for('admin') }}" method="GET">
+          <input type="submit" value="Create Card">
+        </form>
+      {% endif %}
+      {% if current_page != 'view' %}
+      <form action="{{ url_for('view') }}" method="GET">
+        <input type="submit" value="View">
+      </form>
+      {% endif %}
+    {% endif %}
+    {% if current_page != 'changecredentials' %}
+      <form action="{{ url_for('changecredentials') }}" method="GET">
+        <input type="submit" value="Change Credentials">
+      </form>
+    {% endif %}
+  </div>

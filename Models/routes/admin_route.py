@@ -34,8 +34,8 @@ def generate_available_card_number():
 class Admin(MethodResource):
     @jwt_required()
     def post(self):
-        if not (get_jwt_identity() and get_jwt_identity()['role'] == 3):
-            redirect(url_for('home', _method='GET'))
+        if not (get_jwt_identity() and get_jwt_identity()['role'] == 1):
+            return redirect(url_for('home', _method='GET'))
 
         method = request.form.get('_method')
         if method == 'CREATE':
@@ -85,7 +85,6 @@ class Admin(MethodResource):
         user = User.query.filter_by(user_email=email).first()
 
         try:
-
             newcarte = Carte(carte_number=carte_number, carte_validity_year=carte_validity_year,
                              carte_study_year=study_year, carte_user_id=user.user_id)
 
@@ -95,7 +94,7 @@ class Admin(MethodResource):
 
             db.session.commit()
 
-            return redirect(url_for('login', _method='GET', message=message + "Card Successfully Created"))
+            return redirect(url_for('admin', _method='GET', message=message + "Card Successfully Created"))
 
         except IntegrityError:
             db.session.rollback()
@@ -108,9 +107,11 @@ class Admin(MethodResource):
 
         message = request.args.get('message')
 
-        if not get_jwt_identity():
+        current_user = get_jwt_identity()
+
+        if not current_user:
             return redirect(url_for('login', _method='GET', message=message))
-        if not get_jwt_identity()['role'] == 1:
+        if not current_user['role'] == 1:
             return redirect(url_for('home', _method='GET', message=message))
 
         form.card_number.choices = generate_available_card_number()
@@ -118,7 +119,8 @@ class Admin(MethodResource):
         users = User.query.options(joinedload(User.role)).all()
         roles = Role.query.all()
 
-        template = render_template('admin.html', users=users, roles=roles, message=message, form=form)
+        template = render_template('admin.html', users=users, roles=roles, message=message,
+                                   form=form, current_user=current_user, current_page='admin')
         response = make_response(template)
         response.headers['Content-Type'] = 'text/html'
         return response
