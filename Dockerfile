@@ -35,4 +35,4 @@ RUN chown -R lowpriv:lowpriv /etc/ssl/cartefede/
 
 USER lowpriv
 
-CMD ["gunicorn","-b","0.0.0.0:80","-w","3"]
+CMD ["gunicorn","-b","0.0.0.0:80","-w","3","app:create_app()"]
