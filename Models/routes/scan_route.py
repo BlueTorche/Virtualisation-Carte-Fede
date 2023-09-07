@@ -2,7 +2,7 @@ from flask import render_template, make_response, request
 from flask_apispec import MethodResource
 
 from Models.database.databasemodels import Carte, User
-from utils import calculate_validity
+from Models.utils.utils import calculate_validity
 
 
 class Scan(MethodResource):
