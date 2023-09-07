@@ -1,4 +1,4 @@
-  GNU nano 6.2                                                                                                   requirements.txt                                                                                                            aniso8601==9.0.1
+aniso8601==9.0.1
 apispec==6.3.0
 argon2==0.1.10
 cryptography==41.0.1

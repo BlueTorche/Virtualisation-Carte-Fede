@@ -23,9 +23,9 @@ COPY app.py app.py
 COPY dockerutils/cert.pem /etc/ssl/cartefede/certs/cert.pem
 COPY dockerutils/key.pem /etc/ssl/cartefede/private/key.pem
 
-RUN pip3 install -r requirements.txt --break-system-packages
+RUN pip3 install -r requirements.txt
 
-EXPOSE 8000 4343
+EXPOSE 80 443
 
 #create lowpriv user to run the app with low privileges
 RUN useradd -ms /bin/bash lowpriv
@@ -35,4 +35,4 @@ RUN chown -R lowpriv:lowpriv /etc/ssl/cartefede/
 
 USER lowpriv
 
-CMD ["gunicorn","-b","0.0.0.0:4343","-w","3","--certfile","/etc/ssl/cartefede/certs/cert.pem","--keyfile","/etc/ssl/cartefede/private/key.pem","app:create_app()"]
+CMD ["gunicorn","-b","0.0.0.0:80","-w","3"]

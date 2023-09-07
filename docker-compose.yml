@@ -21,8 +21,7 @@ services:
     build: .
     restart: always
     ports:
-      - "80:4343"
-      - "443:4343"
+      - "80:80"
     depends_on:
       - postgredb
     env_file: .env
