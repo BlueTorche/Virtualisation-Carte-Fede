@@ -7,21 +7,21 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     libpq-dev
 
-RUN mkdir /srv/healthapp
-RUN mkdir /var/log/healthapp
+RUN mkdir /srv/cartefede
+RUN mkdir /var/log/cartefede
 
-RUN touch /var/log/healthapp/access.log
-RUN touch /var/log/healthapp/error.log
+RUN touch /var/log/cartefede/access.log
+RUN touch /var/log/cartefede/error.log
 
-WORKDIR /srv/healthapp
+WORKDIR /srv/cartefede
 
 COPY Models Models
 COPY static static
 COPY templates templates
 COPY requirements.txt requirements.txt
 COPY app.py app.py
-COPY dockerutils/cert.pem /etc/ssl/healthapp/certs/cert.pem
-COPY dockerutils/key.pem /etc/ssl/healthapp/private/key.pem
+COPY dockerutils/cert.pem /etc/ssl/cartefede/certs/cert.pem
+COPY dockerutils/key.pem /etc/ssl/cartefede/private/key.pem
 
 RUN pip3 install -r requirements.txt --break-system-packages
 
@@ -29,10 +29,10 @@ EXPOSE 8000 4343
 
 #create lowpriv user to run the app with low privileges
 RUN useradd -ms /bin/bash lowpriv
-RUN chown -R lowpriv:lowpriv /srv/healthapp
-RUN chown -R lowpriv:lowpriv /var/log/healthapp
-RUN chown -R lowpriv:lowpriv /etc/ssl/healthapp/
+RUN chown -R lowpriv:lowpriv /srv/cartefede
+RUN chown -R lowpriv:lowpriv /var/log/cartefede
+RUN chown -R lowpriv:lowpriv /etc/ssl/cartefede/
 
 USER lowpriv
 
-CMD ["gunicorn","-b","0.0.0.0:4343","-w","3","--certfile","/etc/ssl/healthapp/certs/cert.pem","--keyfile","/etc/ssl/healthapp/private/key.pem","app:create_app()"]
+CMD ["gunicorn","-b","0.0.0.0:4343","-w","3","--certfile","/etc/ssl/cartefede/certs/cert.pem","--keyfile","/etc/ssl/cartefede/private/key.pem","app:create_app()"]
