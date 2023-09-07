@@ -11,10 +11,11 @@
     <table>
         <thead>
             <tr>
-                <th>Validity Year</th>
-                <th>Card Number</th>
-                <th>First Name</th>
-                <th>Last Name</th>
+                <th>Année de validité</th>
+                <th>Numéro de carte</th>
+                <th>Prénom</th>
+                <th>Nom</th>
+                <th>Année d'étude</th>
             </tr>
         </thead>
         <tbody>
@@ -24,6 +25,7 @@
                     <td>{{ info.number }}</td>
                     <td>{{ info.first_name }}</td>
                     <td>{{ info.last_name }}</td>
+                    <td>{{ info.etude }}</td>
                 </tr>
             {% endfor %}
         </tbody>

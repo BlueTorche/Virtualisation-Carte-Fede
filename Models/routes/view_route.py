@@ -32,6 +32,7 @@ class View(MethodResource):
                               "number": carte.carte_number,
                               "first_name": user.user_first_name,
                               "last_name": user.user_last_name,
+                              "etude": carte.carte_study_year,
                               })
 
         template = render_template('view.html', infos=infos, current_user=current_user, current_page='view')

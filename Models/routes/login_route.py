@@ -35,8 +35,8 @@ class Login(MethodResource):
     def get(self):
         message = request.args.get('message')
 
-        # if:
-        #     return make_response(redirect(url_for('home', _method='GET', message=message)))
+        if request.cookies.get('access_token_cookie'):
+            return make_response(redirect(url_for('home', _method='GET', message=message)))
 
         form = LoginForm()
         template = render_template('login.html', form=form, message=message)
