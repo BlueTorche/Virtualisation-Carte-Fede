@@ -23,7 +23,7 @@ COPY app.py app.py
 COPY dockerutils/cert.pem /etc/ssl/cartefede/certs/cert.pem
 COPY dockerutils/key.pem /etc/ssl/cartefede/private/key.pem
 
-RUN pip3 install -r requirements.txt
+RUN pip3 install -r requirements.txt --break-system-packages
 
 EXPOSE 80 443
 
