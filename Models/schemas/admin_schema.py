@@ -3,7 +3,7 @@ from flask_wtf import FlaskForm
 from wtforms import SubmitField, StringField, SelectField
 from wtforms.validators import DataRequired, Email, Length
 
-from ..utils import calculate_all_validity_year, calculate_validity
+from Models.utils.utils import calculate_all_validity_year, calculate_validity
 
 
 class AdminForm(FlaskForm):
