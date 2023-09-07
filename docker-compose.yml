@@ -16,8 +16,8 @@ services:
       - "${POSTGRES_ENV_PORT}:${POSTGRES_ENV_PORT}"
     command: -p ${POSTGRES_ENV_PORT}
   
-  healthapp:
-    container_name: healthapp
+  cartefede:
+    container_name: cartefede
     build: .
     restart: always
     ports:
