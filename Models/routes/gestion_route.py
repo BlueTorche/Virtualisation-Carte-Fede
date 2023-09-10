@@ -29,7 +29,7 @@ class Gestion(MethodResource):
                     and any(c.isdigit() for c in password)
                     and len(password) >= 8):
                 return redirect(
-                    url_for('register', _method='GET', message='Votre mot de passe doit au moins faire 8 caractère,'
+                    url_for('gestion', _method='GET', message='Votre mot de passe doit au moins faire 8 caractère,'
                                                                ' contenir une lettre en majuscule, une lettre en'
                                                                ' minuscule et un chiffre.'))
         # Query the database to check if the username and password are valid

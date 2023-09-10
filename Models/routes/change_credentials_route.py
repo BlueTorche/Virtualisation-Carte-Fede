@@ -43,7 +43,7 @@ class ChangeCredentials(MethodResource):
                         and any(c.isdigit() for c in new_password)
                         and len(new_password) >= 8):
                     return redirect(
-                        url_for('register', _method='GET', message='Votre mot de passe doit au moins faire 8 caractère,'
+                        url_for('changecredentials', _method='GET', message='Votre mot de passe doit au moins faire 8 caractère,'
                                                                    ' contenir une lettre en majuscule, une lettre en'
                                                                    ' minuscule et un chiffre.'))
 
