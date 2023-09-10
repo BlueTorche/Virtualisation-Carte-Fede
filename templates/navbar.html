@@ -1,22 +1,73 @@
-  <!-- Your common head content here -->
-  <style>
-    .navbar {
-      display: none; /* Initially hide the navbar */
-    }
+<!-- Your common head content here -->
+<!-- Your common head content here -->
+<style>
+  .navbar {
+    display: none; /* Initially hide the navbar */
+    text-align: center; /* Center the content */
+  }
 
-    .navbar.active {
-      display: block; /* Show the navbar when active class is applied */
-    }
-  </style>
-  <script>
-    function toggleNavbar() {
-      var navbar = document.querySelector('.navbar');
-      navbar.classList.toggle('active');
-    }
-  </script>
+  .navbar.active {
+    display: block; /* Show the navbar when active class is applied */
+  }
+
+  .hamburger-button {
+    display: inline-block;
+    width: 380px; /* Set the button width */
+    background-color: white; /* Set the background color */
+    padding: 10px; /* Add padding for better spacing */
+  }
+
+  .hamburger-icon {
+    display: inline-block;
+    cursor: pointer;
+    padding: 10px;
+  }
+  .hamburger-icon:hover {
+    background: #cccccc;
+  }
+
+  /* Style the hamburger icon */
+  .hamburger-icon .bar {
+    width: 25px;
+    height: 3px;
+    background-color: #2f3293; /* Set the bar color */
+    margin: 4px 0;
+    transition: 0.4s;
+  }
+
+  /* Rotate the top and bottom bar to form an 'X' when active */
+  .navbar.active .hamburger-icon .bar:nth-child(1) {
+    transform: rotate(-45deg) translate(-5px, 6px);
+  }
+
+  .navbar.active .hamburger-icon .bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .navbar.active .hamburger-icon .bar:nth-child(3) {
+    transform: rotate(45deg) translate(-5px, -6px);
+  }
+
+  /* Adjust the height of the navbar buttons */
+  .navbar.active input {
+    height: 30px; /* Set the desired button height */
+  }
+</style>
+
+<script>
+  function toggleNavbar() {
+    var navbar = document.querySelector('.navbar');
+    navbar.classList.toggle('active');
+  }
+</script>
 
 <!-- navbar.html -->
-  <button onclick="toggleNavbar()">Navbar</button>
+<div class="container" style="">
+  <div class="hamburger-icon" onclick="toggleNavbar()">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+  </div>
   <div class="navbar">
     <form action="{{ url_for('logout') }}" method="GET">
       <input type="submit" value="Logout">
@@ -39,3 +90,4 @@
       </form>
     {% endif %}
   </div>
+</div>

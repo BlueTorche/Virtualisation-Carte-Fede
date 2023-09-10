@@ -26,6 +26,14 @@
                     <td>{{ info.first_name }}</td>
                     <td>{{ info.last_name }}</td>
                     <td>{{ info.etude }}</td>
+                    <td>
+                        <form method="POST" action="{{ url_for('view') }}">
+                            {{ form.csrf_token }}
+                            <input type="hidden" name="carte_id" value="{{ info.carte_id }}">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit">Delete Card</button>
+                        </form>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>

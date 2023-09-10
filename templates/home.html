@@ -9,6 +9,10 @@
 <body>
     {% include 'navbar.html' %}
 <div class="container">
+    {% if message %}
+        <div class="message">{{ message }}</div>
+    {% endif %}
+
     <h1>QR Code:</h1>
     <a href="{{link}}">
         <img src="{{ qrcode(link, error_correction='H', fill_color='2f3293', icon_img=url_for('static', filename='img/logo-fede.PNG', _external=True)) }}">
@@ -19,9 +23,6 @@
     <h3>Prénom : {{user.user_first_name}}</h3>
     <h3>Etude : {{carte.carte_study_year}}</h3>
 
-    {% if message %}
-        <div class="message">{{ message }}</div>
-    {% endif %}
 </div>
 </body>
 </html>

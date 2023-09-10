@@ -2,10 +2,24 @@ from flask import render_template, make_response, request, redirect, url_for
 from flask_apispec import MethodResource
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
-from Models.database.databasemodels import Carte, User
+from Models.database.databasemodels import Carte, User, db
+from Models.schemas.view_schema import ViewForm
 
 
 class View(MethodResource):
+
+    @jwt_required()
+    def post(self):
+        carte_id = request.form.get('carte_id')
+
+        card = Carte.query.get(carte_id)
+        if not card:
+            return {"message": "Card not found"}
+
+        db.session.delete(card)
+        db.session.commit()
+
+        return self.get()
 
     @jwt_required()
     def get(self):
@@ -17,6 +31,8 @@ class View(MethodResource):
             return redirect(url_for('login', _method='GET', message=message))
         if not current_user['role'] == 1:
             return redirect(url_for('home', _method='GET', message=message))
+
+        form = ViewForm()
 
         cartes = Carte.query.all()
 
@@ -33,8 +49,9 @@ class View(MethodResource):
                               "first_name": user.user_first_name,
                               "last_name": user.user_last_name,
                               "etude": carte.carte_study_year,
+                              "carte_id": carte.carte_id,
                               })
 
-        template = render_template('view.html', infos=infos, current_user=current_user, current_page='view')
+        template = render_template('view.html', infos=infos, current_user=current_user, current_page='view', form=form)
         response = make_response(template)
         return response
