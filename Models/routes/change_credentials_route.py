@@ -67,7 +67,7 @@ class ChangeCredentials(MethodResource):
         return redirect(url_for('changecredentials', _method='GET', message='Error finding your user account.'))
 
     @jwt_required()
-    def get(self):
+    def load_get_method(self):
         if not (get_jwt_identity()):
             redirect(url_for('login', _method='GET'))
 
@@ -80,3 +80,8 @@ class ChangeCredentials(MethodResource):
         response = make_response(template)
         response.headers['Content-Type'] = 'text/html'
         return response
+
+    def get(self):
+        if not request.cookies.get('access_token_cookie'):
+            return make_response(redirect(url_for('login', _method='GET')))
+        return self.load_get_method()

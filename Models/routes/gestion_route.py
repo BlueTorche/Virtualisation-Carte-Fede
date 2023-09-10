@@ -62,7 +62,7 @@ class Gestion(MethodResource):
 
 
     @jwt_required()
-    def get(self):
+    def load_get_method(self):
         message = request.args.get('message')
 
         current_user = get_jwt_identity()
@@ -82,4 +82,9 @@ class Gestion(MethodResource):
         response = make_response(template)
         response.headers['Content-Type'] = 'text/html'
         return response
+
+    def get(self):
+        if not request.cookies.get('access_token_cookie'):
+            return make_response(redirect(url_for('login', _method='GET')))
+        return self.load_get_method()
 

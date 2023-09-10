@@ -6,6 +6,7 @@ from flask_jwt_extended import create_access_token, set_access_cookies, create_r
 from Models.database.databasemodels import User, Carte
 from Models.utils.limiter import limiter
 
+from jwt import ExpiredSignatureError
 
 class Home(MethodResource):
     decorators = [limiter.limit("10/minute")]  # Apply rate limiting to the class
@@ -14,7 +15,7 @@ class Home(MethodResource):
         return
 
     @jwt_required()
-    def get(self):
+    def load_get_method(self):
         message = request.args.get('message')
         user = User.query.filter_by(user_email=get_jwt_identity()['email']).first()
 
@@ -36,4 +37,14 @@ class Home(MethodResource):
                                    carte=carte, current_user=current_user, current_page='home')
         response = make_response(template)
         response.headers['Content-Type'] = 'text/html'
+        return response
+
+    def get(self):
+        response = make_response(redirect(url_for('logout', _method='GET')))
+        if not request.cookies.get('access_token_cookie'):
+            return response
+        try:
+            response = self.load_get_method()
+        except ExpiredSignatureError:
+            print("Token has expired")
         return response

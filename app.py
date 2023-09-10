@@ -68,13 +68,10 @@ def create_app():
 
     QRcode(app)
 
-    print(
-        f"I'll try to connect to the database with the following credentials: postgresql://{dbusername}:{dbpassword}@{dbhost}:{dbport}/{dbname}")
-
     app.config.update({
         'SQLALCHEMY_DATABASE_URI': 'postgresql://' + dbusername + ':' + dbpassword + '@' + dbhost + ':' + dbport + '/' + dbname,
         'MAX_CONTENT_LENGTH': 32 * 1024 * 1024,
-        'PERMANENT_SESSION_LIFETIME': timedelta(minutes=60),
+        'PERMANENT_SESSION_LIFETIME': timedelta(days=30),
         'JWT_TOKEN_LOCATION': ["headers", "cookies"],
         'JWT_ACCESS_COOKIE_PATH': '/',
         'JWT_COOKIE_CSRF_PROTECT': False,
@@ -82,7 +79,7 @@ def create_app():
         'JWT_HEADER_TYPE': "CustomScheme",
         'JWT_QUERY_STRING_NAME': "token",
         'JWT_SECRET_KEY': jwt_secret_key,
-        'JWT_ACCESS_TOKEN_EXPIRES': timedelta(hours=1),
+        'JWT_ACCESS_TOKEN_EXPIRES': timedelta(days=30),
         'JWT_REFRESH_TOKEN_EXPIRES': timedelta(days=30),
         'JWT_BLACKLIST_ENABLED': True,
         'JWT_BLACKLIST_TOKEN_CHECKS': ['access', 'refresh'],

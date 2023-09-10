@@ -111,7 +111,7 @@ class Admin(MethodResource):
             return redirect(url_for('admin', _method='GET', message=message + "Error Creating card"))
 
     @jwt_required()
-    def get(self):
+    def load_get_method(self):
         form = AdminForm()
 
         message = request.args.get('message')
@@ -132,4 +132,15 @@ class Admin(MethodResource):
                                    form=form, current_user=current_user, current_page='admin')
         response = make_response(template)
         response.headers['Content-Type'] = 'text/html'
+
+        return response
+
+    def get(self):
+        response = make_response(redirect(url_for('login', _method='GET')))
+        if not request.cookies.get('access_token_cookie'):
+            return response
+        try:
+            response = self.load_get_method()
+        except jwt.ExpiredSignatureError:
+            print("Token has expired")
         return response
