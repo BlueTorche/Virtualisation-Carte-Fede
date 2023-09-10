@@ -72,7 +72,7 @@
     <form action="{{ url_for('logout') }}" method="GET">
       <input type="submit" value="Logout">
     </form>
-    {% if current_user  and current_user ['role'] == 1 %}
+    {% if current_user and current_user ['role'] == 1 %}
       {% if current_page != 'admin' %}
         <form action="{{ url_for('admin') }}" method="GET">
           <input type="submit" value="Create Card">
@@ -81,6 +81,11 @@
       {% if current_page != 'view' %}
       <form action="{{ url_for('view') }}" method="GET">
         <input type="submit" value="View">
+      </form>
+      {% endif %}
+      {% if current_page != 'gestion' %}
+      <form action="{{ url_for('gestion') }}" method="GET">
+        <input type="submit" value="Gestion">
       </form>
       {% endif %}
     {% endif %}

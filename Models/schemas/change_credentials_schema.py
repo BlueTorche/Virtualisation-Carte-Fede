@@ -10,4 +10,4 @@ class ChangeCredentialsForm(FlaskForm):
     new_password = PasswordField('Nouveau Mot de Passe', validators=[])
     copy_new_password = PasswordField('Validez Nouveau Mot de Passe', validators=[])
     old_password = PasswordField('Ancien Mot de Passe', validators=[InputRequired()])
-    submit = SubmitField('Change Credentials')
+    submit = SubmitField('Changer les Indentifiants')

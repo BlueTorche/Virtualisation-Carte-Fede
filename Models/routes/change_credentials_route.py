@@ -20,7 +20,7 @@ class ChangeCredentials(MethodResource):
         new_lastname = request.form.get('lastname')
         new_email = request.form.get('email')
         new_password = request.form.get('new_password')
-        copy_new_password = request.form.get('new_password')
+        copy_new_password = request.form.get('copy_new_password')
         old_password = request.form.get('old_password')
 
         if not new_password == copy_new_password:
@@ -71,9 +71,12 @@ class ChangeCredentials(MethodResource):
         if not (get_jwt_identity()):
             redirect(url_for('login', _method='GET'))
 
+        current_user = get_jwt_identity();
+
         form = ChangeCredentialsForm()
         message = request.args.get('message')
-        template = render_template('change_credentials.html', form=form, message=message)
+        template = render_template('change_credentials.html', form=form, message=message,
+                                   current_user=current_user, current_page='changecredentials')
         response = make_response(template)
         response.headers['Content-Type'] = 'text/html'
         return response

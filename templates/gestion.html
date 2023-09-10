@@ -2,9 +2,58 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="icon" href="url_for('static', filename='img/logo-fede.PNG', _external=True))"/>
 </head>
 <body>
     {% include 'navbar.html' %}
+      <div class="container">
+    <form action="{{ url_for('gestion') }}" method="POST">
+      <h2>Créer un Administrateur</h2>
+        {% if message %}
+          <div class="message">{{ message }}</div>
+        {% endif %}
+        {{ form.csrf_token }}
+        {{ form.firstname.label }} {{ form.firstname }}
+        {{ form.lastname.label }} {{ form.lastname }}
+        {{ form.email.label }} {{ form.email }}
+        {{ form.password.label }} {{ form.password }}
+        {{ form.copy_password.label }} {{ form.copy_password }}
+        {{ form.submit }}
+    </form>
+  </div>
+    <div class="container">
+    <table>
+        <tbody>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.user_first_name }}</td>
+                    <td>{{ user.user_last_name }}</td>
+                    <td>{{ user.user_email }}</td>
+                    <td>{{ user.role.role_name }}</td>
+                    <td>
+                        <form method="POST" action="{{ url_for('admin') }}">
+                            {{ form.csrf_token }}
+                            <input type="hidden" name="user_id" value="{{ user.user_id }}">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" onclick="return confirm('Are you sure you want to delete this user?')">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+    </div>
 </body>
 </html>

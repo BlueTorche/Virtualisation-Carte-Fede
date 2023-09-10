@@ -24,7 +24,7 @@ body, html {
   padding: 20px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
   text-align: center;
-  max-width: 400px; /* Limit width for readability */
+  /* max-width: 400px; /* Limit width for readability */
   margin: 0 auto; /* Center horizontally */
 }
 
@@ -99,3 +99,33 @@ input[type="submit"]:hover {
 .integer-field {
     max-width: 40%;
   }
+
+/* Add a small margin to the table */
+table {
+    margin: 10px;
+    border-collapse: collapse; /* Collapse table borders */
+    width: 100%; /* Ensure the table takes up the full width of its container */
+}
+
+/* Style the table header */
+thead {
+    background-color: #f2f2f2; /* Background color for the header row */
+}
+
+/* Style the table header cells (th) */
+th {
+    border: 1px solid #ddd; /* Add a border to separate columns */
+    padding: 8px; /* Add some padding for better readability */
+    text-align: left; /* Align text to the left in header cells */
+}
+
+/* Style the table body rows (td) */
+td {
+    border: 1px solid #ddd; /* Add a border to separate columns */
+    padding: 8px; /* Add some padding for better readability */
+}
+
+/* Style the horizontal line between the header and table body */
+thead tr:last-child th {
+    border-bottom: 2px solid #000; /* Add a thicker bottom border for the last row in the header */
+}

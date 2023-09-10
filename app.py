@@ -20,11 +20,20 @@ from Models.routes.admin_route import Admin
 from Models.routes.logout_route import Logout
 from Models.routes.scan_route import Scan
 from Models.routes.view_route import View
+from Models.routes.gestion_route import Gestion
+
+from jwt.exceptions import ExpiredSignatureError
+from flask_jwt_extended.exceptions import NoAuthorizationError
 
 
 # from Models.routes.ChangeCredentials_route import ChangeCredentials
 # from Models.utils.limiter import limiter
 
+def handle_no_authorization_error(e):
+    # Handle the NoAuthorizationError here
+    # You can log the error or perform any other actions if needed
+    # Redirect the user to a specific page
+    return redirect(url_for('login'))
 
 def load_env():
     if os.path.exists('.env'):
@@ -80,7 +89,10 @@ def create_app():
         'JWT_ERROR_MESSAGE_KEY': 'message',
     })
 
-    JWTManager(app)
+    jwt = JWTManager(app)
+
+    app.register_error_handler(NoAuthorizationError, handle_no_authorization_error)
+    app.register_error_handler(ExpiredSignatureError, handle_no_authorization_error)
 
     app.secret_key = flask_secret_key
     CSRFProtect(app)
@@ -94,6 +106,7 @@ def create_app():
     api.add_resource(View, '/view')
     api.add_resource(Scan, '/scan')
     api.add_resource(Logout, '/logout')
+    api.add_resource(Gestion, '/gestion')
     api.add_resource(ChangeCredentials, '/change-credentials')
 
     register_extensions(app)
@@ -108,3 +121,10 @@ if __name__ == '__main__':
     ARGDEBUG = len(sys.argv) > 1 and sys.argv[1] in ('-d', '--debug')
     app = create_app()
     app.run(debug=ARGDEBUG)
+
+
+
+
+
+
+
