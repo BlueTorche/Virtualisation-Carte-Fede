@@ -35,8 +35,7 @@ CREATE TABLE "public"."carte" (
     "carte_validity_year" character varying NOT NULL,
     "carte_study_year" character varying NOT NULL,
     "carte_user_id" uuid NOT NULL,
-    CONSTRAINT "carte_pkey" PRIMARY KEY ("carte_id"),
-    CONSTRAINT "unique_carte_number" UNIQUE ("carte_number")
+    CONSTRAINT "carte_pkey" PRIMARY KEY ("carte_id")
 ) WITH (oids = false);
 
 

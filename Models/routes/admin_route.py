@@ -1,11 +1,10 @@
-import re
-
 import argon2
 from flask_apispec import MethodResource
 from flask import render_template, make_response, request, redirect, url_for
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import joinedload
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from sqlalchemy import and_
 
 from Models.schemas.admin_schema import AdminForm
 from Models.database.databasemodels import User, Role, db, Password, Carte
@@ -13,22 +12,21 @@ from Models.database.databasemodels import User, Role, db, Password, Carte
 import datetime
 
 
-def generate_available_card_number():
-    all_cartes = Carte.query.all()
+def generate_available_card_number(carte_type, validity_year):
+    matching_cards = Carte.query.filter(
+        and_(
+            Carte.carte_number.like(carte_type + '%'),
+            Carte.carte_validity_year == validity_year
+        )
+    ).all()
 
-    card_num_set = set([int(re.sub(r'\D', '', card.carte_number)) for card in all_cartes])
+    card_num_set = set([int(card.carte_number[2:]) for card in matching_cards])
 
-    max_size = 1000
-    max_select_box_size = 20
-
-    to_return = []
-    for num in range(1, max_size+1):
-        if num not in card_num_set:
-            to_return.append(num)
-            if len(to_return) >= max_select_box_size:
-                break
-
-    return to_return
+    i = 1
+    while True:
+        if not i in card_num_set:
+            return i
+        i += 1
 
 
 class Admin(MethodResource):
@@ -48,10 +46,16 @@ class Admin(MethodResource):
         firstname = request.form.get('firstname')
         lastname = request.form.get('lastname')
         email = request.form.get('email')
-        study_year = request.form.get('study_year')
 
+        study_year = request.form.get('study_year')
+        carte_type = request.form.get('card_type')
         carte_number = request.form.get('card_number')
         carte_validity_year = request.form.get('validity_year')
+
+        if carte_number is "":
+            carte_number = generate_available_card_number(carte_type, carte_validity_year)
+
+        carte_number = carte_type + "-" + str(carte_number)
 
         user = User.query.filter_by(user_email=email).first()
 
@@ -61,17 +65,17 @@ class Admin(MethodResource):
             password = "password"
 
             try:
-                newuser = User(user_first_name=firstname, user_last_name=lastname, user_email=email, user_role=2)
+                new_user = User(user_first_name=firstname, user_last_name=lastname, user_email=email, user_role=2)
 
-                db.session.add(newuser)
+                db.session.add(new_user)
                 db.session.flush()
-                db.session.refresh(newuser)
+                db.session.refresh(new_user)
 
                 # Generate a salt and hash the password
                 hasher = argon2.PasswordHasher()
                 hashed_password = hasher.hash(password)
 
-                newpassword = Password(user_id=newuser.user_id, password=hashed_password)
+                newpassword = Password(user_id=new_user.user_id, password=hashed_password)
 
                 db.session.add(newpassword)
                 db.session.commit()
@@ -85,12 +89,17 @@ class Admin(MethodResource):
         user = User.query.filter_by(user_email=email).first()
 
         try:
-            newcarte = Carte(carte_number=carte_number, carte_validity_year=carte_validity_year,
-                             carte_study_year=study_year, carte_user_id=user.user_id)
+            print(carte_number)
+            print(carte_validity_year)
+            print(study_year)
+            print(user.user_id)
 
-            db.session.add(newcarte)
+            new_carte = Carte(carte_number=carte_number, carte_validity_year=carte_validity_year,
+                              carte_study_year=study_year, carte_user_id=user.user_id)
+
+            db.session.add(new_carte)
             db.session.flush()
-            db.session.refresh(newcarte)
+            db.session.refresh(new_carte)
 
             db.session.commit()
 
@@ -114,7 +123,7 @@ class Admin(MethodResource):
         if not current_user['role'] == 1:
             return redirect(url_for('home', _method='GET', message=message))
 
-        form.card_number.choices = generate_available_card_number()
+        # form.card_number.choices = generate_available_card_number()
 
         users = User.query.options(joinedload(User.role)).all()
         roles = Role.query.all()

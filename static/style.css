@@ -92,3 +92,10 @@ input[type="submit"]:hover {
     font-size: 16px;
   }
 }
+
+.horizontal-display {
+  display: inline-block;
+}
+.integer-field {
+    max-width: 40%;
+  }

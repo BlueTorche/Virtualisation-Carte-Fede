@@ -20,7 +20,11 @@
       <label>{{ form.lastname.label }} {{ form.lastname }}</label>
       <label>{{ form.study_year.label }} {{ form.study_year }}</label>
       <label>{{ form.validity_year.label }} {{ form.validity_year }}</label>
-      <label>{{ form.card_number.label }} {{ form.card_number }}</label>
+      <label>{{ form.card_number.label }} </label>
+      <div class="horizontal-display">
+        <div style="width:40%">{{ form.card_type }}</div>
+        <div style="width:40%;">{{ form.card_number }}</div>
+      </div>
       <div class="submit-button">
         {{ form.submit }}
       </div>

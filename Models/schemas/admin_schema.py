@@ -1,6 +1,6 @@
 
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, StringField, SelectField
+from wtforms import SubmitField, StringField, SelectField, IntegerField
 from wtforms.validators import DataRequired, Email, Length
 
 from Models.utils.utils import calculate_all_validity_year, calculate_validity
@@ -36,8 +36,8 @@ class AdminForm(FlaskForm):
         ('Exté', 'Exté'),
         ('Autre', 'Autre'),
     ])
-    card_number = SelectField('Numéro de Carte', validators=[DataRequired()],
-                              choices=[])
+    card_type = SelectField('Numéro de Carte', validators=[DataRequired()], choices=["F", "B"])
+    card_number = IntegerField('Numéro de Carte', validators=[])
     validity_year = SelectField('Année de validité', validators=[DataRequired()],
                                 choices=calculate_all_validity_year(), default=calculate_validity())
     submit = SubmitField('Créer')
