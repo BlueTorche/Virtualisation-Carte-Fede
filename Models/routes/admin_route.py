@@ -52,7 +52,7 @@ class Admin(MethodResource):
         carte_number = request.form.get('card_number')
         carte_validity_year = request.form.get('validity_year')
 
-        if carte_number is "":
+        if carte_number == "":
             carte_number = generate_available_card_number(carte_type, carte_validity_year)
 
         carte_number = carte_type + "-" + str(carte_number)
