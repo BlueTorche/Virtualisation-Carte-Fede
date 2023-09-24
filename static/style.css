@@ -9,8 +9,8 @@ body {
 
 /* Center the content vertically and horizontally */
 body, html {
-  display: flex;
-  height: 100%;
+  /*display: flex;
+  height: 100%;*/
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -19,13 +19,31 @@ body, html {
 /* Style for the QR code container */
 .container {
   background-color: #ffffff; /* White box background */
+  width: 500px;
+  max-width: 70%;
   color:#2f3293;
   border-radius: 10px;
-  padding: 20px;
+  padding: 30px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
   text-align: center;
   /* max-width: 400px; /* Limit width for readability */
   margin: 0 auto; /* Center horizontally */
+}
+
+.table-container {
+  background-color: #ffffff; /* White box background */
+  width: 500px;
+  color:#2f3293;
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
+  text-align: center;
+  /* max-width: 400px; /* Limit width for readability */
+  margin: 0 auto; /* Center horizontally */
+}
+
+.height-space{
+  height:6rem;
 }
 
 h2 {

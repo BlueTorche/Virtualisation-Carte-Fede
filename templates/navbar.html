@@ -1,98 +1,187 @@
 <!-- Your common head content here -->
 <!-- Your common head content here -->
 <style>
-  .navbar {
-    display: none; /* Initially hide the navbar */
-    text-align: center; /* Center the content */
-  }
 
-  .navbar.active {
-    display: block; /* Show the navbar when active class is applied */
-  }
+:root {
+    --main-color: #fff;
+    --derive-main-color: #ccc;
+    --text-color : #2f3293;
+    --text-hover-color : #0f1273;
+}
 
-  .hamburger-button {
-    display: inline-block;
-    width: 380px; /* Set the button width */
-    background-color: white; /* Set the background color */
-    padding: 10px; /* Add padding for better spacing */
-  }
+.navbar {
+    position: fixed;
+    width: 100%;
+    z-index: 9;
 
-  .hamburger-icon {
-    display: inline-block;
-    cursor: pointer;
-    padding: 10px;
-  }
-  .hamburger-icon:hover {
-    background: #cccccc;
-  }
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--main-color);
+    color: #eee;
 
-  /* Style the hamburger icon */
-  .hamburger-icon .bar {
-    width: 25px;
-    height: 3px;
-    background-color: #2f3293; /* Set the bar color */
-    margin: 4px 0;
-    transition: 0.4s;
-  }
+    border-bottom: 3px solid var(--derive-main-color);
 
-  /* Rotate the top and bottom bar to form an 'X' when active */
-  .navbar.active .hamburger-icon .bar:nth-child(1) {
-    transform: rotate(-45deg) translate(-5px, 6px);
-  }
+    padding-left: 1vw;
+    padding-right: 5vw;
+}
 
-  .navbar.active .hamburger-icon .bar:nth-child(2) {
-    opacity: 0;
-  }
+.navbar-brand {
+    height: 3rem;
+    margin: .5rem;
+    padding: .5rem;
+}
+.navbar-brand:hover {
+    background-color : var(--derive-main-color);
+    border-radius: 0.5em;
+}
 
-  .navbar.active .hamburger-icon .bar:nth-child(3) {
-    transform: rotate(45deg) translate(-5px, -6px);
-  }
+.navbar-links ul {
+    margin-left: 0;
+    margin-right: 5vw;
+    padding-left: 5vw;
+    display: flex;
+}
 
-  /* Adjust the height of the navbar buttons */
-  .navbar.active input {
-    height: 30px; /* Set the desired button height */
-  }
+.navbar-links li{
+    list-style: none;
+}
+
+.navbar-links li a {
+    text-decoration: none;
+    color: var(--text-color);
+    padding: 1rem;
+    display: block;
+    font-size: large;
+}
+
+.navbar-links li:hover{
+    background-color: var(--derive-main-color);
+    border-radius: 0.5em;
+}
+
+.navbar-camenbert{
+    position:absolute;
+    top: 1rem;
+    left: 80vw;
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 3rem;
+    height: 3rem;
+    padding: .3rem;
+    align-items: center;
+}
+
+.navbar-camenbert:hover{
+    background-color: var(--derive-main-color);
+    border-radius: 0.5em;
+}
+
+.navbar-camenbert .bar {
+    height: .5rem;
+    width: 90%;
+    background-color: var(--text-color);
+    border-radius: 10px;
+}
+
+
+@media (max-width: 825px) {
+    .navbar-camenbert {
+        display: flex;
+    }
+
+    .navbar-links {
+        display: none;
+        width: 100%;
+    }
+
+    .navbar-links ul {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navbar-links.active {
+        display: flex;
+    }
+}
+
 </style>
 
+
+<nav class="navbar">
+    <div class="navbar-brand ">
+        <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='img/logo-fede.PNG', _external=True) }}" style="height:100%;"></a>
+    </div>
+    <a href="#" class="navbar-camenbert">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </a>
+    <div class="navbar-links">
+        <ul>
+            <li><a href ="{{ url_for('logout') }}">Déconnexion</a></li>
+    {% if current_user and current_user ['role'] == 1 %}
+            <li><a href ="{{ url_for('admin') }}">Créer une carte</a></li>
+            <li><a href ="{{ url_for('view') }}">Voir les Cartes</a></li>
+            <li><a href ="{{ url_for('gestion') }}">Gérers les Admins</a></li>
+      {% endif %}
+    {% if current_user and current_user ['role'] == 2 %}
+            <li><a href ="{{ url_for('home') }}">QR Code</a></li>
+      {% endif %}
+            <li><a href ="{{ url_for('changecredentials') }}">Changer les Identifiants</a></li>
+        </ul>
+    </div>
+</nav>
+
 <script>
-  function toggleNavbar() {
-    var navbar = document.querySelector('.navbar');
-    navbar.classList.toggle('active');
-  }
+    const toggleButton = document.getElementsByClassName("navbar-camenbert")[0]
+    const navbarLinks  = document.getElementsByClassName("navbar-links")[0]
+
+    toggleButton.addEventListener('click', () =>{
+        navbarLinks.classList.toggle('active')
+    })
 </script>
 
-<!-- navbar.html -->
-<div class="container" style="">
-  <div class="hamburger-icon" onclick="toggleNavbar()">
+<!-- navbar.html
+<div class="navbar" style="">
+  <div class="navbar-camenbert" onclick="toggleNavbar()">
     <div class="bar"></div>
     <div class="bar"></div>
     <div class="bar"></div>
   </div>
-  <div class="navbar">
-    <form action="{{ url_for('logout') }}" method="GET">
+  <div class="navbar-links">
+    <li><form action="{{ url_for('logout') }}" method="GET">
       <input type="submit" value="Logout">
-    </form>
+    </form></li>
     {% if current_user and current_user ['role'] == 1 %}
       {% if current_page != 'admin' %}
-        <form action="{{ url_for('admin') }}" method="GET">
+        <li><form action="{{ url_for('admin') }}" method="GET">
           <input type="submit" value="Create Card">
-        </form>
+        </form></li>
       {% endif %}
       {% if current_page != 'view' %}
-      <form action="{{ url_for('view') }}" method="GET">
+      <li><form action="{{ url_for('view') }}" method="GET">
         <input type="submit" value="View">
-      </form>
+      </form></li>
       {% endif %}
       {% if current_page != 'gestion' %}
-      <form action="{{ url_for('gestion') }}" method="GET">
+      <li><form action="{{ url_for('gestion') }}" method="GET">
         <input type="submit" value="Gestion">
-      </form>
+      </form></li>
       {% endif %}
     {% endif %}
     {% if current_page != 'changecredentials' %}
-      <form action="{{ url_for('changecredentials') }}" method="GET">
+      <li><form action="{{ url_for('changecredentials') }}" method="GET">
         <input type="submit" value="Change Credentials">
-      </form>
+      </form></li>
     {% endif %}
   </div>
 </div>
+-->
+<div class="height-space"></div>
