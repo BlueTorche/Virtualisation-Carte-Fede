@@ -8,6 +8,7 @@
     {% include 'navbar.html' %}
       <div class="container">
     <form action="{{ url_for('gestion') }}" method="POST">
+        <input type="hidden" name="_method" value="CREATE">
       <h2>Créer un Administrateur</h2>
         {% if message %}
           <div class="message">{{ message }}</div>
@@ -27,21 +28,21 @@
     <tbody>
         <thead>
             <tr>
-                <th>Nom</th>
-                <th>Prénom</th>
                 <th>Email</th>
+                <th>Prénom</th>
+                <th>Nom</th>
                 <th>Role</th>
                 <th>Action</th>
             </tr>
         </thead>
         {% for user in users %}
             <tr>
+                <td>{{ user.user_email }}</td>
                 <td>{{ user.user_first_name }}</td>
                 <td>{{ user.user_last_name }}</td>
-                <td>{{ user.user_email }}</td>
                 <td>{{ user.role.role_name }}</td>
                 <td>
-                    <form method="POST" action="{{ url_for('admin') }}">
+                    <form method="POST" action="{{ url_for('gestion') }}">
                         {{ form.csrf_token }}
                         <input type="hidden" name="user_id" value="{{ user.user_id }}">
                         <input type="hidden" name="_method" value="DELETE">

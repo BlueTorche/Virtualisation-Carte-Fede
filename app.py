@@ -22,6 +22,13 @@ from Models.routes.scan_route import Scan
 from Models.routes.view_route import View
 from Models.routes.gestion_route import Gestion
 
+from Models.flutter_api.flutter_login_route import FlutterLogin
+from Models.flutter_api.flutter_admin_route import FlutterAdmin
+from Models.flutter_api.flutter_gestion_route import FlutterGestion
+from Models.flutter_api.flutter_view_route import FlutterView
+from Models.flutter_api.flutter_change_password import FlutterChangePassword
+from Models.flutter_api.flutter_qr_route import FlutterQRCode
+
 from jwt.exceptions import ExpiredSignatureError
 from flask_jwt_extended.exceptions import NoAuthorizationError
 
@@ -92,7 +99,7 @@ def create_app():
     app.register_error_handler(ExpiredSignatureError, handle_no_authorization_error)
 
     app.secret_key = flask_secret_key
-    CSRFProtect(app)
+    # CSRFProtect(app)
     # limiter.init_app(app)
 
     # ajoute les ressources à l'api et les joint à la route
@@ -106,6 +113,13 @@ def create_app():
     api.add_resource(Gestion, '/gestion')
     api.add_resource(ChangeCredentials, '/change-credentials')
 
+    api.add_resource(FlutterLogin, '/api/login')
+    api.add_resource(FlutterAdmin, '/api/admin')
+    api.add_resource(FlutterGestion, '/api/gestion')
+    api.add_resource(FlutterView, '/api/view')
+    api.add_resource(FlutterChangePassword, '/api/change_password')
+    api.add_resource(FlutterQRCode, '/api/qrcode')
+
     register_extensions(app)
     return app
 
@@ -114,14 +128,12 @@ def register_extensions(app):
     db.init_app(app)
 
 
+
+
 if __name__ == '__main__':
     ARGDEBUG = len(sys.argv) > 1 and sys.argv[1] in ('-d', '--debug')
     app = create_app()
-    app.run(debug=ARGDEBUG)
-
-
-
-
+    app.run(debug=ARGDEBUG, host='0.0.0.0')
 
 
 

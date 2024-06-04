@@ -4,7 +4,7 @@ from flask import render_template, make_response, request, session, redirect, ur
 from flask_jwt_extended import create_access_token, set_access_cookies, create_refresh_token, set_refresh_cookies, \
     get_jwt_identity, jwt_required
 
-from Models.database.databasemodels import User, Password , Role
+from Models.database.databasemodels import User, Password, Role
 from Models.schemas.login_schema import LoginForm
 from Models.utils.limiter import limiter
 

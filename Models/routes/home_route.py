@@ -8,6 +8,7 @@ from Models.utils.limiter import limiter
 
 from jwt import ExpiredSignatureError
 
+
 class Home(MethodResource):
     decorators = [limiter.limit("10/minute")]  # Apply rate limiting to the class
 
@@ -28,7 +29,7 @@ class Home(MethodResource):
 
         carte = Carte.query.filter_by(
             carte_user_id=User.query.filter_by(user_email=current_user['email']).first().user_id
-                                    ).first()
+        ).first()
         domain = request.host_url
         code = carte.carte_validity_year + '_' + carte.carte_number
         link = f'{domain}scan?code={code}'

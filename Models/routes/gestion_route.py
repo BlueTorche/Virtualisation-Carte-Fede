@@ -12,53 +12,69 @@ from sqlalchemy.exc import IntegrityError
 class Gestion(MethodResource):
     @jwt_required()
     def post(self):
-        firstname = request.form.get('firstname')
-        lastname = request.form.get('lastname')
-        email = request.form.get('email')
-        password = request.form.get('password')
-        copy_password = request.form.get('copy_password')
+        method = request.form.get('_method')
+        if method == 'CREATE':
+            firstname = request.form.get('firstname')
+            lastname = request.form.get('lastname')
+            email = request.form.get('email')
+            password = request.form.get('password')
+            copy_password = request.form.get('copy_password')
 
-        message = ""
+            if not password == copy_password:
+                return redirect(url_for('gestion', _method='GET',
+                                        message='The new passwords are different and should be the same.'))
+            if password:
+                if not (any(c.islower() for c in password)
+                        and any(c.isupper() for c in password)
+                        and any(c.isdigit() for c in password)
+                        and len(password) >= 8):
+                    return redirect(
+                        url_for('gestion', _method='GET', message='Votre mot de passe doit au moins faire 8 caractères,'
+                                                                   ' contenir une lettre en majuscule, une lettre en'
+                                                                   ' minuscule et un chiffre.'))
+                # Query the database to check if the username and password are valid
+                user = User.query.filter_by(user_email=email).first()
 
-        if not password == copy_password:
-            return redirect(url_for('gestion', _method='GET',
-                                    message='The new passwords are different and should be the same.'))
-        if password:
-            if not (any(c.islower() for c in password)
-                    and any(c.isupper() for c in password)
-                    and any(c.isdigit() for c in password)
-                    and len(password) >= 8):
-                return redirect(
-                    url_for('gestion', _method='GET', message='Votre mot de passe doit au moins faire 8 caractère,'
-                                                               ' contenir une lettre en majuscule, une lettre en'
-                                                               ' minuscule et un chiffre.'))
-        # Query the database to check if the username and password are valid
-        user = User.query.filter_by(user_email=email).first()
+                if user is None:
+                    try:
+                        new_user = User(user_first_name=firstname, user_last_name=lastname, user_email=email, user_role=1)
 
-        if user is None:
-            try:
-                new_user = User(user_first_name=firstname, user_last_name=lastname, user_email=email, user_role=1)
+                        db.session.add(new_user)
+                        db.session.flush()
+                        db.session.refresh(new_user)
 
-                db.session.add(new_user)
-                db.session.flush()
-                db.session.refresh(new_user)
+                        # Generate a salt and hash the password
+                        hasher = argon2.PasswordHasher()
+                        hashed_password = hasher.hash(password)
 
-                # Generate a salt and hash the password
-                hasher = argon2.PasswordHasher()
-                hashed_password = hasher.hash(password)
+                        newpassword = Password(user_id=new_user.user_id, password=hashed_password)
 
-                newpassword = Password(user_id=new_user.user_id, password=hashed_password)
+                        db.session.add(newpassword)
+                        db.session.commit()
 
-                db.session.add(newpassword)
-                db.session.commit()
+                        return redirect(url_for('gestion', _method='GET', message="Account Successfully Created"))
+                    except IntegrityError:
+                        db.session.rollback()
+                        return redirect(url_for('gestion', _method='GET', message="This Email Already Exists"))
 
-                message += "Account Successfully Created\n"
+                return redirect(url_for('gestion', _method='GET', message="That User already exist"))
+            return redirect(url_for('gestion', _method='GET', message="Password is null"))
+        if method == 'DELETE':
+            user_id = request.form.get('user_id')
 
-            except IntegrityError:
-                db.session.rollback()
-                return redirect(url_for('admin', _method='GET', message="This Email Already Exists"))
+            user = User.query.filter_by(user_id=user_id).first()
 
-        return redirect(url_for('gestion', _method='GET', message="That User already exist"))
+            if user.user_email == get_jwt_identity()['email']:
+                return redirect(url_for('gestion', _method='GET', message="You cannot delete your own account."))
+
+            if not user:
+                return {"message": "Card not found"}
+
+            db.session.delete(user)
+            db.session.commit()
+
+            return redirect(url_for('gestion', _method='GET', message="Account Delete successfully"))
+        return {"message": "Invalid request"}
 
 
     @jwt_required()
