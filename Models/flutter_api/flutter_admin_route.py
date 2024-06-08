@@ -6,6 +6,7 @@ from sqlalchemy.orm import joinedload
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy import and_
 
+from Models.utils.utils import generate_available_card_number
 from Models.schemas.admin_schema import AdminForm
 from Models.database.databasemodels import User, Role, db, Password, Carte
 
