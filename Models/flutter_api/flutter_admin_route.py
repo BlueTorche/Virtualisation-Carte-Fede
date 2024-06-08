@@ -6,11 +6,26 @@ from sqlalchemy.orm import joinedload
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy import and_
 
-from Models.utils.utils import generate_available_card_number
 from Models.schemas.admin_schema import AdminForm
 from Models.database.databasemodels import User, Role, db, Password, Carte
 
 import datetime
+
+def generate_available_card_number(carte_type, validity_year):
+    matching_cards = Carte.query.filter(
+        and_(
+            Carte.carte_number.like(carte_type + '%'),
+            Carte.carte_validity_year == validity_year
+        )
+    ).all()
+
+    card_num_set = set([int(card.carte_number[2:]) for card in matching_cards])
+
+    i = 1
+    while True:
+        if not i in card_num_set:
+            return i
+        i += 1
 
 
 class FlutterAdmin(MethodResource):
