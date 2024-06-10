@@ -16,7 +16,7 @@ class Gestion(MethodResource):
         if method == 'CREATE':
             firstname = request.form.get('firstname')
             lastname = request.form.get('lastname')
-            email = request.form.get('email')
+            email = request.form.get('email').lower()
             password = request.form.get('password')
             copy_password = request.form.get('copy_password')
 
