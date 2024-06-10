@@ -14,7 +14,7 @@ class Login(MethodResource):
 
     def post(self):
         # Handle login logic here
-        email = request.form.get('email')
+        email = request.form.get('email').lower()
         password = request.form.get('password')
 
         # Query the database to check if the username and password are valid
