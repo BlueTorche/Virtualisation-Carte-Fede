@@ -45,7 +45,7 @@ class Admin(MethodResource):
     def create_carte(self):
         firstname = request.form.get('firstname')
         lastname = request.form.get('lastname')
-        email = request.form.get('email')
+        email = request.form.get('email').lower()
 
         study_year = request.form.get('study_year')
         carte_type = request.form.get('card_type')
